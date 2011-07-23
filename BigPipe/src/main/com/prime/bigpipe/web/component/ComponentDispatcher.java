@@ -17,12 +17,12 @@ public class ComponentDispatcher {
 	private ComponentHandlerMapper componentHandlerMapper;
 
 	@Autowired
-	private ComponentRenderer componentRenderer;
+	private ComponentHandlerExecutor componentHandlerExecutor;
 
 	public void dispatch(String componentName, Map<String, Object> params, HttpServletRequest request, HttpServletResponse response) {
 		ComponentHandler handler = componentHandlerMapper.findHandlerFor(componentName);
-		ComponentViewModel viewModel = handler.handle(params, request);
-		componentRenderer.render(viewModel, request, response);
+		componentHandlerExecutor.execute(handler,componentName,params,request,response);
+		
 	}
 
 }

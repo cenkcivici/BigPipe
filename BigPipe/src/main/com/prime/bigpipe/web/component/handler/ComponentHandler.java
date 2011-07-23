@@ -6,6 +6,13 @@ import javax.servlet.http.HttpServletRequest;
 
 import com.prime.bigpipe.web.component.ComponentViewModel;
 
-public interface ComponentHandler {
-	ComponentViewModel handle(Map<String, Object> params, HttpServletRequest request);
+public abstract class  ComponentHandler {
+	public abstract ComponentViewModel handle(Map<String, Object> params, HttpServletRequest request);
+	
+	public boolean isCacheable() {
+		return false;
+	}
+	public String getCacheKey() {
+		return "";
+	}
 }

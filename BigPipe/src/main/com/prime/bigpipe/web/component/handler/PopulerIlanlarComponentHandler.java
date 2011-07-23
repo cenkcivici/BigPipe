@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 import com.prime.bigpipe.web.component.ComponentViewModel;
 
 @Component
-public class PopulerIlanlarComponentHandler implements ComponentHandler {
+public class PopulerIlanlarComponentHandler extends ComponentHandler {
 
 	@Override
 	public ComponentViewModel handle(Map<String, Object> params, HttpServletRequest request) {
