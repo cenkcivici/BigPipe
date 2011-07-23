@@ -12,7 +12,7 @@ public class ComponentHandlerMapper implements ApplicationContextAware {
 
 	private ApplicationContext applicationContext;
 
-	//also includes logic for A/B testing 
+	//will include logic for A/B testing 
 	public ComponentHandler findHandlerFor(String componentName) {
 		return (ComponentHandler) applicationContext.getBean(componentName + "ComponentHandler");
 	}
