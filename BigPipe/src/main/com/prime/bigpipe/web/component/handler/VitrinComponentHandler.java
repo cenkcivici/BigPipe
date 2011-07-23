@@ -17,5 +17,20 @@ public class VitrinComponentHandler extends ComponentHandler {
 		viewModel.setView("vitrin");
 		return viewModel;
 	}
+	
+	@Override
+	public boolean isCacheable() {
+		return true;
+	}
+	
+	@Override
+	public long getTtlInSeconds() {
+		return 100L;
+	}
+	
+	@Override
+	public String getCacheKeyFrom(String componentName, Map<String, Object> params, HttpServletRequest request) {
+		return componentName;
+	}
 
 }

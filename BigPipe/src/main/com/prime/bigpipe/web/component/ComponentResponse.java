@@ -15,19 +15,10 @@ public class ComponentResponse implements HttpServletResponse {
 	private StringWriter stringWriter;
 	private PrintWriter printWriter;
 
-	public static ComponentResponse withPrintWriter(PrintWriter printWriter) {
-		ComponentResponse componentResponse = new ComponentResponse(printWriter);
+	
+	public static ComponentResponse withStringWriter() {
+		ComponentResponse componentResponse = new ComponentResponse(new StringWriter());
 		return componentResponse;
-	}
-
-	public static ComponentResponse withStringWriter(StringWriter stringWriter) {
-		ComponentResponse componentResponse = new ComponentResponse(
-				stringWriter);
-		return componentResponse;
-	}
-
-	private ComponentResponse(PrintWriter printWriter) {
-		this.printWriter = printWriter;
 	}
 
 	private ComponentResponse(StringWriter stringWriter) {
