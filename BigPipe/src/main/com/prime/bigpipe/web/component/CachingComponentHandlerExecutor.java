@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
@@ -18,6 +19,7 @@ import com.prime.bigpipe.web.component.handler.ComponentHandler;
 public class CachingComponentHandlerExecutor implements ComponentHandlerExecutor {
 
 	@Autowired
+	@Qualifier("defaultComponentHandlerExecutor")
 	private ComponentHandlerExecutor handlerExecutorToDecorate;
 
 	@Autowired
