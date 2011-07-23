@@ -1,0 +1,5 @@
+#macro(component $name $params)
+	<div id="namecomponent">
+		$_componentDispatcher.dispatch($name,$params,$_request,$_response)	
+  	</div>
+#end
