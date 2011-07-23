@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 import com.prime.bigpipe.web.component.handler.ComponentHandler;
 
 @Service
-public class DefaultComponentHandlerExecutor {
+public class DefaultComponentHandlerExecutor implements ComponentHandlerExecutor {
 
 	@Autowired
 	private ComponentRenderer componentRenderer;
