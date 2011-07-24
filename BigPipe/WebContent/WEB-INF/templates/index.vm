@@ -5,9 +5,8 @@
 <title>Insert title here</title>
 </head>
 <body>
-
 #component("vitrin" {})
 #component("populerIlanlar" {})
-
+#flushAll()
 </body>
 </html>

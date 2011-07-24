@@ -56,9 +56,17 @@ http://www.springframework.org/schema/task/spring-task-3.0.xsd">
 			</props>
 		</property>
 	</bean>
+	
+
+	<bean id="executorService" class="java.util.concurrent.Executors"
+	    factory-method="newFixedThreadPool" destroy-method="shutdownNow">
+	    <constructor-arg value="10" />
+	</bean>
 
 	
- 
+	<bean id="bigPipeExecutionService" class="com.prime.bigpipe.web.component.DefaultBigPipeExecutionService">
+		<aop:scoped-proxy/>
+	</bean>
 
 </beans>
 

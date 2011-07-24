@@ -91,19 +91,16 @@ public class ComponentResponse implements HttpServletResponse {
 
 	@Override
 	public void setContentLength(int arg0) {
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public void setContentType(String arg0) {
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public void setLocale(Locale arg0) {
-		// TODO Auto-generated method stub
 
 	}
 

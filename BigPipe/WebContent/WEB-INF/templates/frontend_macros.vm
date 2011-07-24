@@ -1,5 +1,9 @@
 #macro(component $name $params)
-	<div id="namecomponent">
+	<div id="${name}component">
 		$_componentDispatcher.dispatch($name,$params,$_request,$_response)	
   	</div>
+#end
+
+#macro(flushAll)
+	$_componentDispatcher.flushAll()
 #end
