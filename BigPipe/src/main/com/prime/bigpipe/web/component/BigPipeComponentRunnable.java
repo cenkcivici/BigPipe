@@ -66,8 +66,11 @@ public class BigPipeComponentRunnable implements Runnable {
 			writer.write("<script>bigpipe.onComponentArrived(");
 			writer.write(jsonObject.toString());
 			writer.write(");</script>");
-			response.setContentType("text/html");
-			response.flushBuffer();
+			
+			synchronized (writer) {
+				response.flushBuffer();
+				response.resetBuffer();
+			}
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}

@@ -62,6 +62,8 @@ http://www.springframework.org/schema/task/spring-task-3.0.xsd">
 	    factory-method="newFixedThreadPool" destroy-method="shutdownNow">
 	    <constructor-arg value="10" />
 	</bean>
+	
+	
 
 	
 	<bean id="bigPipeExecutionService" class="com.prime.bigpipe.web.component.DefaultBigPipeExecutionService">

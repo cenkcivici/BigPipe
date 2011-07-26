@@ -29,8 +29,8 @@ public class ComponentDispatcher {
 		componentHandlerExecutor.execute(handler,componentName,params,request,response);
 	}
 	
-	public void flushAll() {
-		bigPipeExecutionService.flushAll();
+	public void waitForLastComponentToFinish() {
+		bigPipeExecutionService.waitForLastComponentToFinish();
 		
 	}
 

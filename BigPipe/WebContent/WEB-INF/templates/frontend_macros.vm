@@ -5,5 +5,5 @@
 #end
 
 #macro(flushAll)
-	$_componentDispatcher.flushAll()
+	$_componentDispatcher.waitForLastComponentToFinish()
 #end
