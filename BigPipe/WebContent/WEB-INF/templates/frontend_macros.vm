@@ -4,6 +4,6 @@
   	</div>
 #end
 
-#macro(flushAll)
+#macro(waitForFinish)
 	$_componentDispatcher.waitForLastComponentToFinish()
 #end
