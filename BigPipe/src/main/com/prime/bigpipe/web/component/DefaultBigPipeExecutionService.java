@@ -37,9 +37,13 @@ public class DefaultBigPipeExecutionService implements BigPipeExecutionService {
 	@Override
 	public void waitForLastComponentToFinish() {
 		//TODO a better wait method?
-		while(blockingQueue.size() < countOfRunnablesSubmitted) {
+		while(hasRunningComponentThreads()) {
 			Thread.yield();
 		}
+	}
+
+	private boolean hasRunningComponentThreads() {
+		return countOfRunnablesSubmitted > 0 && blockingQueue.size() < countOfRunnablesSubmitted;
 	}
 
 }
