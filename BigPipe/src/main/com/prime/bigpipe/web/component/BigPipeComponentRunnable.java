@@ -63,7 +63,7 @@ public class BigPipeComponentRunnable implements Runnable {
 			jsonObject.element("name", componentName);
 			
 			PrintWriter writer = response.getWriter();
-			writer.write("<script>bigpipe.onComponentArrived(");
+			writer.write("<script>bigpipe.registerComponent(");
 			writer.write(jsonObject.toString());
 			writer.write(");</script>");
 			

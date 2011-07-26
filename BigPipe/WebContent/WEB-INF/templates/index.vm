@@ -2,7 +2,9 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title></title>
+<title>BigPipe</title>
+<script src="$_staticRoot/js/bigpipe.js" ></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
 </head>
 <body>
 #component("vitrin" {})

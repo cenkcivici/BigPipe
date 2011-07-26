@@ -40,7 +40,7 @@ http://www.springframework.org/schema/task/spring-task-3.0.xsd">
 	<util:map id="velocityAttributes" map-class="java.util.HashMap">
 		<entry key="_staticRoot" value="${static.root}" />
 		<entry key="_appRoot" value="${app.root}" />
-		<entry key="_componentDispatcher">
+		<entry key="_componentDispatcher" >
 			<ref bean="componentDispatcher"/>
 		</entry>
 	</util:map>
