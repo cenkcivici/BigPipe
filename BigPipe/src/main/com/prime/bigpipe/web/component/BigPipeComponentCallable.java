@@ -1,8 +1,7 @@
 package com.prime.bigpipe.web.component;
 
-import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.Map;
+import java.util.concurrent.Callable;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -11,7 +10,7 @@ import net.sf.json.JSONObject;
 
 import com.prime.bigpipe.web.component.handler.ComponentHandler;
 
-public class BigPipeComponentRunnable implements Runnable {
+public class BigPipeComponentCallable implements Callable<JSONObject> {
 
 	private final ComponentHandlerExecutor handlerExecutor;
 	private final ComponentHandler handler;
@@ -20,7 +19,7 @@ public class BigPipeComponentRunnable implements Runnable {
 	private final HttpServletRequest request;
 	private final HttpServletResponse response;
 
-	public BigPipeComponentRunnable(ComponentHandlerExecutor handlerExecutor, ComponentHandler handler, String componentName, Map<String, Object> params, HttpServletRequest request, HttpServletResponse response) {
+	public BigPipeComponentCallable(ComponentHandlerExecutor handlerExecutor, ComponentHandler handler, String componentName, Map<String, Object> params, HttpServletRequest request, HttpServletResponse response) {
 		this.handlerExecutor = handlerExecutor;
 		this.handler = handler;
 		this.componentName = componentName;
@@ -53,27 +52,16 @@ public class BigPipeComponentRunnable implements Runnable {
 		return response;
 	}
 
-	public void run() {
+	@Override
+	public JSONObject call() {
 		ComponentResponse componentResponse = ComponentResponse.withStringWriter();
 		handlerExecutor.execute(handler, componentName, params, request, componentResponse);
 		
-		try {
-			JSONObject jsonObject = new JSONObject();
-			jsonObject.element("content", componentResponse.getContent());
-			jsonObject.element("name", componentName);
-			
-			PrintWriter writer = response.getWriter();
-			writer.write("<script>bigpipe.registerComponent(");
-			writer.write(jsonObject.toString());
-			writer.write(");</script>");
-			
-			synchronized (writer) {
-				response.flushBuffer();
-				response.resetBuffer();
-			}
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		}
+		JSONObject jsonObject = new JSONObject();
+		jsonObject.element("content", componentResponse.getContent());
+		jsonObject.element("name", componentName);
+
+		return jsonObject;
 	}
 
 }

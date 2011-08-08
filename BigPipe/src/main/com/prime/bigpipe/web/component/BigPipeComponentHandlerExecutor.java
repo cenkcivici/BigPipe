@@ -32,7 +32,7 @@ public class BigPipeComponentHandlerExecutor implements ComponentHandlerExecutor
 			//dont async if cacheable
 			cachingComponentHandlerExecutor.execute(handler, componentName, params, request, response);
 		} else {
-			BigPipeComponentRunnable bigPipeContext = new BigPipeComponentRunnable(defaultComponentHandlerExecutor,handler,componentName,params,request,response);
+			BigPipeComponentCallable bigPipeContext = new BigPipeComponentCallable(defaultComponentHandlerExecutor,handler,componentName,params,request,response);
 			bigPipeExecutionService.registerComponentCall(bigPipeContext);
 		}
 		

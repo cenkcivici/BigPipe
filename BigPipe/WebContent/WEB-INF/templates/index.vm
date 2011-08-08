@@ -9,6 +9,6 @@
 <body>
 #component("vitrin" {})
 #component("populerIlanlar" {})
-#waitForFinish()
+#flushComponents()
 </body>
 </html>

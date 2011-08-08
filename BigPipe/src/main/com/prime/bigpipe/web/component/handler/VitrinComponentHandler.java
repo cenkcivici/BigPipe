@@ -18,7 +18,6 @@ public class VitrinComponentHandler extends ComponentHandler {
 		try {
 			Thread.sleep(2000L);
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return viewModel;
