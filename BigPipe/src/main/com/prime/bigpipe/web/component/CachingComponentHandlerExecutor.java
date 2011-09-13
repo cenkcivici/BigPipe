@@ -1,10 +1,8 @@
 package com.prime.bigpipe.web.component;
 
-import java.io.IOException;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,29 +24,20 @@ public class CachingComponentHandlerExecutor implements ComponentHandlerExecutor
 	private CacheManager cacheManager;
 
 	@Override
-	public void execute(ComponentHandler handler, String componentName, Map<String, Object> params, HttpServletRequest request, HttpServletResponse response) {
-		try {
-			if (handler.isCacheable()) {
-				String key = handler.getCacheKeyFrom(componentName, params, request);
-				Assert.notNull(key);
+	public String execute(ComponentHandler handler, String componentName, Map<String, Object> params, HttpServletRequest request) {
+		if (handler.isCacheable()) {
+			String key = handler.getCacheKeyFrom(componentName, params, request);
+			Assert.notNull(key);
 
-				String content = cacheManager.get(key);
+			String content = cacheManager.get(key);
 
-				if (StringUtils.isEmpty(content)) {
-					ComponentResponse componentResponse = ComponentResponse.withStringWriter();
-					handlerExecutorToDecorate.execute(handler, componentName, params, request, componentResponse);
-					cacheManager.put(key, componentResponse.getContent(), handler.getTtlInSeconds());
-					content = componentResponse.getContent();
-				}
-
-				response.getWriter().write(content);
-			} else {
-				handlerExecutorToDecorate.execute(handler, componentName, params, request, response);
+			if (StringUtils.isEmpty(content)) {
+				content = handlerExecutorToDecorate.execute(handler, componentName, params, request);
+				cacheManager.put(key, content, handler.getTtlInSeconds());
 			}
-		} catch (IOException e) {
-			e.printStackTrace();
+			return content;
+		} else {
+			return handlerExecutorToDecorate.execute(handler, componentName, params, request);
 		}
-
 	}
-
 }

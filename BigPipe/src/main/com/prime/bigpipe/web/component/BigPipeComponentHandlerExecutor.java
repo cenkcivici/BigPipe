@@ -5,6 +5,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -26,19 +27,16 @@ public class BigPipeComponentHandlerExecutor implements ComponentHandlerExecutor
 	private BigPipeExecutionService bigPipeExecutionService;
 	
 	@Override
-	public void execute(ComponentHandler handler, String componentName, Map<String, Object> params, HttpServletRequest request, HttpServletResponse response) {
+	public String execute(ComponentHandler handler, String componentName, Map<String, Object> params, HttpServletRequest request) {
 		
 		if (handler.isCacheable()) {
 			//dont async if cacheable
-			cachingComponentHandlerExecutor.execute(handler, componentName, params, request, response);
+			return cachingComponentHandlerExecutor.execute(handler, componentName, params, request);
 		} else {
-			BigPipeComponentCallable bigPipeContext = new BigPipeComponentCallable(defaultComponentHandlerExecutor,handler,componentName,params,request,response);
+			BigPipeComponentCallable bigPipeContext = new BigPipeComponentCallable(defaultComponentHandlerExecutor,handler,componentName,params,request);
 			bigPipeExecutionService.registerComponentCall(bigPipeContext);
+			return StringUtils.EMPTY;
 		}
-		
-		
-		
-		
 	}
 
 }

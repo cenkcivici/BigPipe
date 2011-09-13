@@ -15,11 +15,6 @@ public class VitrinComponentHandler extends ComponentHandler {
 	public ComponentViewModel handle(Map<String, Object> params, HttpServletRequest request) {
 		ComponentViewModel viewModel = new ComponentViewModel();
 		viewModel.setView("vitrin");
-		try {
-			Thread.sleep(2000L);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
 		return viewModel;
 	}
 

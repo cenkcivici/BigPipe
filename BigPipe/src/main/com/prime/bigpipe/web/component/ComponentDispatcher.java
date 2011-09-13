@@ -18,15 +18,15 @@ public class ComponentDispatcher {
 	private ComponentHandlerMapper componentHandlerMapper;
 
 	@Autowired
-	@Qualifier("bigPipeComponentHandlerExecutor")
+	@Qualifier("defaultComponentHandlerExecutor")
 	private ComponentHandlerExecutor componentHandlerExecutor;
 	
 	@Autowired
 	private BigPipeExecutionService bigPipeExecutionService;
 
-	public void dispatch(String componentName, Map<String, Object> params, HttpServletRequest request, HttpServletResponse response) {
+	public String dispatch(String componentName, Map<String, Object> params, HttpServletRequest request) {
 		ComponentHandler handler = componentHandlerMapper.findHandlerFor(componentName);
-		componentHandlerExecutor.execute(handler,componentName,params,request,response);
+		return componentHandlerExecutor.execute(handler,componentName,params,request);
 	}
 	
 	public void flushComponents(HttpServletResponse response) {

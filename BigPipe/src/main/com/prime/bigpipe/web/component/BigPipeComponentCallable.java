@@ -4,7 +4,6 @@ import java.util.Map;
 import java.util.concurrent.Callable;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import net.sf.json.JSONObject;
 
@@ -17,15 +16,13 @@ public class BigPipeComponentCallable implements Callable<JSONObject> {
 	private final String componentName;
 	private final Map<String, Object> params;
 	private final HttpServletRequest request;
-	private final HttpServletResponse response;
 
-	public BigPipeComponentCallable(ComponentHandlerExecutor handlerExecutor, ComponentHandler handler, String componentName, Map<String, Object> params, HttpServletRequest request, HttpServletResponse response) {
+	public BigPipeComponentCallable(ComponentHandlerExecutor handlerExecutor, ComponentHandler handler, String componentName, Map<String, Object> params, HttpServletRequest request) {
 		this.handlerExecutor = handlerExecutor;
 		this.handler = handler;
 		this.componentName = componentName;
 		this.params = params;
 		this.request = request;
-		this.response = response;
 	}
 
 	public ComponentHandlerExecutor getHandlerExecutor() {
@@ -48,17 +45,12 @@ public class BigPipeComponentCallable implements Callable<JSONObject> {
 		return request;
 	}
 
-	public HttpServletResponse getResponse() {
-		return response;
-	}
-
 	@Override
 	public JSONObject call() {
-		ComponentResponse componentResponse = ComponentResponse.withStringWriter();
-		handlerExecutor.execute(handler, componentName, params, request, componentResponse);
+		String content = handlerExecutor.execute(handler, componentName, params, request);
 		
 		JSONObject jsonObject = new JSONObject();
-		jsonObject.element("content", componentResponse.getContent());
+		jsonObject.element("content",content);
 		jsonObject.element("name", componentName);
 
 		return jsonObject;

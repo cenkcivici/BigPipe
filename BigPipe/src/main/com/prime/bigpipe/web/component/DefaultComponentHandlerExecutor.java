@@ -16,9 +16,10 @@ public class DefaultComponentHandlerExecutor implements ComponentHandlerExecutor
 	@Autowired
 	private ComponentRenderer componentRenderer;
 
-	public void execute(ComponentHandler handler, String componentName, Map<String, Object> params, HttpServletRequest request, HttpServletResponse response) {
+	public String execute(ComponentHandler handler, String componentName, Map<String, Object> params, HttpServletRequest request) {
 		ComponentViewModel viewModel = handler.handle(params, request);
-		componentRenderer.render(viewModel, request, response);
+		ComponentResponse componentResponse = ComponentResponse.withStringWriter();
+		componentRenderer.render(viewModel, request, componentResponse);
+		return componentResponse.getContent();
 	}
-
 }
