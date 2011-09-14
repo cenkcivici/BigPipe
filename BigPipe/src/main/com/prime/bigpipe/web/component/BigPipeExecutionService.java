@@ -1,8 +1,13 @@
 package com.prime.bigpipe.web.component;
 
-import javax.servlet.http.HttpServletResponse;
+import net.sf.json.JSONObject;
 
 public interface BigPipeExecutionService {
 	void registerComponentCall(BigPipeComponentCallable runnable);
-	void flushComponents(HttpServletResponse response);
+
+	int getCountOfRunnables();
+
+	JSONObject getNextFinishedComponent();
+
+	void oneLessRunnable();
 }

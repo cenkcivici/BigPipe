@@ -1,6 +1,5 @@
 package com.prime.bigpipe.web.component;
 
-import java.io.PrintWriter;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.CompletionService;
 import java.util.concurrent.ExecutorCompletionService;
@@ -9,7 +8,6 @@ import java.util.concurrent.Future;
 import java.util.concurrent.LinkedBlockingQueue;
 
 import javax.annotation.PostConstruct;
-import javax.servlet.http.HttpServletResponse;
 
 import net.sf.json.JSONObject;
 
@@ -26,6 +24,11 @@ public class DefaultBigPipeExecutionService implements BigPipeExecutionService {
 	@Autowired
 	private ExecutorService executorService;
 
+	public int getCountOfRunnables() {
+		return countOfRunnables;
+	}
+
+
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@PostConstruct
 	public void init() {
@@ -37,25 +40,22 @@ public class DefaultBigPipeExecutionService implements BigPipeExecutionService {
 		executionCompletionService.submit(callable);
 		countOfRunnables++;
 	}
-
+	
 	@Override
-	public void flushComponents(HttpServletResponse response) {
+	public JSONObject getNextFinishedComponent() {
 		try {
-			while (countOfRunnables > 0) {
-				Future<JSONObject> future = blockingQueue.take();
-				JSONObject jsonObject = future.get();
-
-				PrintWriter writer = response.getWriter();
-				writer.write("<script>bigpipe.registerComponent(");
-				writer.write(jsonObject.toString());
-				writer.write(");</script>");
-
-				countOfRunnables--;
-				writer.flush();
-			}
+			Future<JSONObject> future =  blockingQueue.take();
+			JSONObject jsonObject = future.get();
+			return jsonObject;
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
+	}
+	
+	@Override
+	public void oneLessRunnable() {
+		countOfRunnables--;
+		
 	}
 
 }

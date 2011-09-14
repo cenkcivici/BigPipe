@@ -3,8 +3,8 @@ package com.prime.bigpipe.web.component;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +20,13 @@ public class DefaultComponentHandlerExecutor implements ComponentHandlerExecutor
 		ComponentViewModel viewModel = handler.handle(params, request);
 		ComponentResponse componentResponse = ComponentResponse.withStringWriter();
 		componentRenderer.render(viewModel, request, componentResponse);
-		return componentResponse.getContent();
+
+		String content = componentResponse.getContent();
+		if (StringUtils.isNotEmpty(content)) {
+			content = content.replaceFirst("<!DOCTYPE\\s+html\\s*>", "");
+		}
+
+		return content;
+
 	}
 }

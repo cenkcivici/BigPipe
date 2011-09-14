@@ -22,6 +22,7 @@ public class PrimeDialect extends AbstractDialect {
 	public Set<IAttrProcessor> getAttrProcessors() {
 		final Set<IAttrProcessor> attrProcessors = new HashSet<IAttrProcessor>();
 		attrProcessors.add(new ComponentAttributeProcessor());
+		attrProcessors.add(new BigPipeFlushAttributeProcessor());
 		return attrProcessors;
 	}
 }

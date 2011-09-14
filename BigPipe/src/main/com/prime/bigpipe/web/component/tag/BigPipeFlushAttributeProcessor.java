@@ -1,10 +1,8 @@
 package com.prime.bigpipe.web.component.tag;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Set;
 
-import javax.servlet.http.HttpServletRequest;
+import net.sf.json.JSONObject;
 
 import org.springframework.context.ApplicationContext;
 import org.thymeleaf.Arguments;
@@ -16,19 +14,18 @@ import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import com.prime.bigpipe.web.component.ComponentContextHolder;
-import com.prime.bigpipe.web.component.ComponentDispatcher;
+import com.prime.bigpipe.web.component.BigPipeExecutionService;
 
-public class ComponentAttributeProcessor extends AbstractUnescapedTextChildModifierAttrProcessor {
+public class BigPipeFlushAttributeProcessor extends AbstractUnescapedTextChildModifierAttrProcessor {
 
 	@Override
 	public Set<AttrApplicability> getAttributeApplicabilities() {
-		return AttrApplicability.createSetForAttrName("component");
+		return AttrApplicability.createSetForAttrName("flush");
 	}
 
 	@Override
 	public Integer getPrecedence() {
-		return Integer.valueOf(2000);
+		return Integer.valueOf(3000);
 	}
 
 	@Override
@@ -36,14 +33,24 @@ public class ComponentAttributeProcessor extends AbstractUnescapedTextChildModif
 			final String componentName) {
 
 		final ApplicationContext appContext = ((SpringWebContext) arguments.getContext()).getApplicationContext();
-		final ComponentDispatcher dispatcher = appContext.getBean(ComponentDispatcher.class);
-		final ComponentContextHolder contextHolder = appContext.getBean(ComponentContextHolder.class);
+		final BigPipeExecutionService bigPipeExecutionService = appContext.getBean(BigPipeExecutionService.class);
 
-		HttpServletRequest request = contextHolder.getRequest();
-		Map<String, Object> params = new HashMap<String, Object>();
+		StringBuilder builder = new StringBuilder();
+		try {
+			while (bigPipeExecutionService.getCountOfRunnables() > 0) {
+				JSONObject jsonObject = bigPipeExecutionService.getNextFinishedComponent();
 
-		String content = dispatcher.dispatch(componentName, params, request);
-		return content;
+				builder.append("<script>bigpipe.registerComponent(");
+				builder.append(jsonObject.toString());
+				builder.append(");</script>");
+
+				bigPipeExecutionService.oneLessRunnable();
+			}
+			return builder.toString();
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+
 	}
 
 }

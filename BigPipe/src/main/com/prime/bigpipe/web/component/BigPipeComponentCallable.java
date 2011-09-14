@@ -48,11 +48,9 @@ public class BigPipeComponentCallable implements Callable<JSONObject> {
 	@Override
 	public JSONObject call() {
 		String content = handlerExecutor.execute(handler, componentName, params, request);
-		
 		JSONObject jsonObject = new JSONObject();
 		jsonObject.element("content",content);
 		jsonObject.element("name", componentName);
-
 		return jsonObject;
 	}
 
