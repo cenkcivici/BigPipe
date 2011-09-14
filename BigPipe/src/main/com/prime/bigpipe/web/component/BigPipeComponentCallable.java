@@ -5,6 +5,8 @@ import java.util.concurrent.Callable;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang.StringEscapeUtils;
+
 import net.sf.json.JSONObject;
 
 import com.prime.bigpipe.web.component.handler.ComponentHandler;
@@ -49,7 +51,7 @@ public class BigPipeComponentCallable implements Callable<JSONObject> {
 	public JSONObject call() {
 		String content = handlerExecutor.execute(handler, componentName, params, request);
 		JSONObject jsonObject = new JSONObject();
-		jsonObject.element("content",content);
+		jsonObject.element("content",StringEscapeUtils.escapeXml(content));
 		jsonObject.element("name", componentName);
 		return jsonObject;
 	}

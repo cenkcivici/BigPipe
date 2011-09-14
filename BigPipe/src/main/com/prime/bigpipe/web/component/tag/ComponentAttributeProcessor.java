@@ -35,13 +35,15 @@ public class ComponentAttributeProcessor extends AbstractUnescapedTextChildModif
 	protected final String getText(final Arguments arguments, final TemplateResolution templateResolution, final Document document, final Element element, final Attr attribute, final String attributeName,
 			final String componentName) {
 
+		element.setAttribute("id", componentName);
+		
 		final ApplicationContext appContext = ((SpringWebContext) arguments.getContext()).getApplicationContext();
 		final ComponentDispatcher dispatcher = appContext.getBean(ComponentDispatcher.class);
 		final ComponentContextHolder contextHolder = appContext.getBean(ComponentContextHolder.class);
 
 		HttpServletRequest request = contextHolder.getRequest();
 		Map<String, Object> params = new HashMap<String, Object>();
-
+		
 		String content = dispatcher.dispatch(componentName, params, request);
 		return content;
 	}
